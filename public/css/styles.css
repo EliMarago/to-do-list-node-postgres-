@@ -1,0 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+NG+Modern:wght@100..400&display=swap");
+
+body {
+  background-color: #fbefc3;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.centered {
+  padding-top: 200px;
+  text-align: center;
+  background-color: #fbefc3;
+}
+
+.secret-text {
+  text-align: center;
+  font-size: 2rem;
+  color: #fff;
+  background-color: #000;
+}
+.card {
+  position: relative;
+  left: 190px;
+  top: 20px;
+  padding: 10px;
+}
+footer {
+  position: fixed;
+  flex: 0 0 auto;
+  color: rgb(92, 92, 92);
+  text-align: center;
+  padding: 16px;
+  bottom: 0;
+  width: 100%;
+}
+.btn {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.box-title {
+  background-color: rgba(243, 153, 19, 0.508);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+h1 {
+  text-align: center;
+  color: rgba(214, 103, 12, 0.99);
+  font-family: "Playwrite NG Modern", cursive;
+  font-weight: bold;
+  padding: 20px;
+}
+.box-container {
+  width: 30rem;
+  height: 40rem;
+  background: rgba(255, 255, 255, 0.699);
+  border: solid rgba(114, 112, 112, 0.906) 2px;
+  border-radius: 18px 18px 18px;
+  overflow: scroll;
+  margin-top: -50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+.icon {
+  margin-left: 580px;
+  width: 4rem;
+  height: 4rem;
+}
+img {
+  margin-bottom: -110px;
+  margin-right: 100px;
+}
+input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px;
+  font-weight: 14px;
+  color: rgb(84, 83, 83);
+  font-family: "Merriweather Sans", sans-serif;
+}
+.button-add {
+  border: none;
+  outline: none;
+  padding: 1px 5px;
+  background-color: rgb(234, 149, 58);
+  font-size: 16px;
+  cursor: pointer;
+  border: 40px;
+  border-radius: 20px 20px 20px 20px;
+  height: 43px;
+  width: 60px;
+  color: white;
+  font-family: "Merriweather Sans", sans-serif;
+}
+.button-add:hover {
+  background-color: rgb(220, 146, 66);
+}
+
+.row-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 40px;
+  padding-left: 30px;
+  background-color: rgb(222, 219, 219);
+  width: 300px;
+  margin-left: 80px;
+  margin-top: 40px;
+}
+
+ul li {
+  list-style: none;
+  font-size: 17px;
+  padding: 13px 10px 10px 50px;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+  font-weight: 700;
+  font-family: "Playwrite NG Modern", cursive;
+
+  color: #696767;
+  right: 20px;
+  margin-top: 12px;
+  font-size: 16px;
+}
+#list-container li:nth-child(odd) {
+  background-color: #ffcf81;
+}
+.box-logout {
+  position: fixed;
+  top: 30px;
+  right: 100px;
+  background-color: #f9e358;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+.box-logout:hover {
+  background-color: #ffd342;
+  cursor: pointer;
+}
+.box-logout a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+.btn-dark {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-trash {
+  border: none;
+  background: none;
+  color: #696767;
+  cursor: pointer;
+}
+#input::placeholder {
+  font-family: "Playwrite NG Modern", cursive;
+}

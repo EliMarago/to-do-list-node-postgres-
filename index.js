@@ -62,7 +62,7 @@ app.get("/todolist", async (req, res) => {
     );
 
     const tasks = result.rows;
-    res.render("todolist.ejs", { tasks: result.rows });
+    res.render("todolist.ejs", { tasks: result.rows, user: req.user });
   } catch (error) {
     console.log(error);
   }
@@ -77,13 +77,13 @@ app.post("/register", async (req, res) => {
     ]);
     if (result.rows.length > 0) {
       return res.send("Email already exists. Try logging in");
-    } else {
-      const hash = await bcrypt.hash(password, saltRounds);
-      const inserted = await db.query(
-        "INSERT INTO users(email,password)VALUES($1,$2)RETURNING *",
-        [email, hash]
-      );
     }
+    const hash = await bcrypt.hash(password, saltRounds);
+    const inserted = await db.query(
+      "INSERT INTO users(email,password)VALUES($1,$2)RETURNING *",
+      [email, hash]
+    );
+
     const user = inserted.rows[0];
     req.login(user, (err) => {
       if (err) {

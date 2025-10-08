@@ -5,6 +5,7 @@ import passport from "passport";
 import session from "express-session"; // gestisce le sessioni lato server
 import bcrypt from "bcrypt";
 import { Strategy } from "passport-local";
+import { createRequire } from "module";
 import env from "dotenv";
 
 env.config();
@@ -13,6 +14,8 @@ const app = express();
 const port = 4000;
 const saltRounds = 10;
 
+const require = createRequire(import.meta.url);
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const db = new pg.Client({
   user: process.env.PG_USER,
   host: process.env.PG_HOST,
@@ -43,7 +46,22 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
-
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+app.get("/reset-password", (req, res) => {
+  res.render("reset-password.ejs");
+});
+app.get(
+  "/auth/google/todolist",
+  passport.authenticate("google", {
+    successRedirect: "/todolist",
+    failureRedirect: "/login",
+  })
+);
 app.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
@@ -51,6 +69,30 @@ app.get("/logout", (req, res, next) => {
     }
     res.redirect("/");
   });
+});
+app.post("/reset-password", async (req, res) => {
+  const email = req.body.email;
+  const newPassword = req.body.password;
+
+  try {
+    const result = await db.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (result.rows.length === 0) {
+      return res.send("❌ Nessun utente trovato con questa email");
+    }
+    const hashed = await bcrypt.hash(newPassword, saltRounds);
+    await db.query("UPDATE users SET password = $1 WHERE email = $2", [
+      hashed,
+      email,
+    ]);
+    res.send(
+      "Password aggiornata con successo ✅ <a href='/login'>Torna al login</a>"
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Errore interno del server");
+  }
 });
 //visualizzare le task
 app.get("/todolist", async (req, res) => {
@@ -173,7 +215,41 @@ passport.deserializeUser(async (id, cb) => {
     cb(null);
   }
 });
-
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:4000/auth/google/todolist",
+      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      try {
+        const email = profile.emails?.[0].value;
+        if (!email) {
+          console.error("nessuna email trovata", profile);
+          return cb(new Error("Email non disponibile da google"));
+        }
+        const result = await db.query("SELECT * FROM users WHERE email = $1", [
+          email,
+        ]);
+        if (result.rows.length === 0) {
+          const newUser = await db.query(
+            "INSERT INTO users (email,password) VALUES($1,$2)",
+            [email, "google"]
+          );
+          return cb(null, newUser.rows[0]);
+        } else {
+          cb(null, result.rows[0]);
+        }
+      } catch (error) {
+        cb(error);
+      }
+    }
+  )
+);
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });

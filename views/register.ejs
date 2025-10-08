@@ -17,10 +17,25 @@
               <input type="password" class="form-control" name="password" />
             </div>
             <button type="submit" class="btn btn-dark">Register</button>
+            <a href="/reset-password" class="btn btn-password"
+              >Reset password</a
+            >
           </form>
+          <a href="/" class="btn btn-back">Back</a>
         </div>
       </div>
     </div>
-    <%- include('partials/footer') %>
+
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body google">
+          <a class="btn btn-block" href="/auth/google" role="button">
+            <i class="fab fa-google"></i>
+            Sign In with Google
+          </a>
+        </div>
+      </div>
+      <%- include('partials/footer') %>
+    </div>
   </div>
 </div>
